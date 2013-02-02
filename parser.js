@@ -15,10 +15,9 @@ var iosColors = function(color) {
 var handleButton = function(key, button) {
 	var buttonOut = [];
 	buttonOut.push("UIButton *" + key + " = [UIButton buttonWithType:UIButtonTypeCustom];\n");
-	if (button.font && button.fontSize)
-		buttonOut.push("UIFont *" + key + "Font = [UIFont fontWithName: " + button.font + "size: " + button.fontSize + "];");
 	if (button.backgroundColor)
 		buttonOut.push(key + ".backgroundColor = " + iosColors(button.backgroundColor));
+	
 
 	output.setValue(buttonOut.join("\n"));
 }
