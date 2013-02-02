@@ -6,10 +6,7 @@
 </head>
 <body>
 
-<div id="editor">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-}</div>
+<div id="editor"></div>
     
 <div id="canvas">
     Dis is the canvas.
@@ -20,6 +17,7 @@
 
     Dis is where the output is.
     <div id="htmlout">
+        <a href="#" id="get-lines">Get</a>
         HTML output
     </div>
 
@@ -30,11 +28,21 @@
 
 <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="js.js"></script>
+<script src="haterz.js"></script>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+
+    $(document).keypress(function(e){
+        if (e.which == 13) {
+            console.log(editor.getValue());
+            }
+        });
+
+    $("#get-lines").click(function(){
+        console.log(editor.getValue());
+        });
 </script>
 </body>
 </html>

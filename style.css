@@ -1,7 +1,7 @@
 body {
     background: #333;
     color: #fff;
-    font: 12px/14px 'Consolas', sans-serif;
+    font: 12px/14px 'Consolas', monospace;
 }
 #editor {
     background: #444;
@@ -26,4 +26,8 @@ body {
 }
 #iosout {
     display: none;
+}
+a, a:link, a:hover, a:Visited {
+    color: #4db0e3;
+    text-decoration: none;
 }
