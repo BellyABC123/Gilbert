@@ -2,45 +2,55 @@ var getViewObject = function(json) {
 	return JSON.parse(json.replace(/(\r\n|\n|\r)/gm,""));
 }
 
-var handleViewObject = function(obj) {
-	var keys = Object.keys(obj);
-}
+var validiOSColors = ["black","darkGray","lightGray","white","gray",
+					  "red","green","blue","cyan","yellow","magenta",
+					  "orange","purple","brown","clear"];
 
-var sample = {
-	"MCNavigationView" : {
-		"chefmatesLogo" : {
-			"class" : "UIButton",
-			"atomic" : "nonatomic",
-			"memory" : "strong", 
-			"position" : "center",
-			"top" : 15,
-			"bottom" : 15,
-			"backgroundColor" : "clear",
-			"font" : "Lobster 1.4",
-			"fontSize" : 42,
-			"textColor" : "white",
-			"text" : "Chefmates",
-			"shadowColor" : "black",
-			"shadowOffset" : "3,3",
-			"textAlignment" : "center",
-		},
-		"pantryButton" : {
-			"class" : "UIButton",
-			"atomic" : "nonatomic",
-			"memory" : "strong", 
-			"position" : "center",
-			"top" : 15,
-			"bottom" : 15,
-			"backgroundColor" : "clear",
-			"font" : "Lobster 1.4",
-			"fontSize" : 24,
-			"textColor" : "white",
-			"text" : "My Pantry",
-			"shadowColor" : "black",
-			"shadowOffset" : "2,2",
-			"textAlignment" : "center",
-		}
+var iosColors = function(color) {
+	if (validiOSColors.indexOf(color) >= 0) {
+		return "[UIColor " + color + "Color];";
 	}
 }
-console.log(sample);
-//console.log(getViewObject(sample));
+
+var handleButton = function(key, button) {
+	var buttonOut = [];
+	buttonOut.push("UIButton *" + key + " = [UIButton buttonWithType:UIButtonTypeCustom];\n");
+	if (button.backgroundColor)
+		buttonOut.push(key + ".backgroundColor = [UIColor " + button.backgroundColor + "Color];");
+
+	output.setValue(buttonOut.join("\n"));
+}
+
+var handleLabel = function(key, label) {
+
+}
+
+var handleSubview = function(key, subview) {
+	if (subview["class"] === undefined) return;
+	var cls = subview["class"];
+	switch (cls) {
+		case "button":
+			handleButton(key, subview);
+			break;
+		case "label":
+			handleLabel(key, subview);
+			break;
+		default:
+			console.log("Unknown class: ", subview["class"]);
+			break;
+	}
+}
+
+var parseCurrent = function() {
+	var lines = editor.getValue();
+	var obj = getViewObject(lines)["MCNavigationView"];
+	$(document).ready(function(){
+		var ios = $("#iosout");
+		var keys = Object.keys(obj);
+		keys.forEach(function(k) {
+			handleSubview(k, obj[k]);
+		});
+	});
+}
+
+parseCurrent();

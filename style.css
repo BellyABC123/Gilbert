@@ -16,10 +16,9 @@ body {
     padding: 10px;
 }
 #output {
-    width: 48%;
+    width: 49%;
     display: block;
     float: left;
-    padding: 10px;
 }
 #htmlout {
     display: visible;
