@@ -16,7 +16,7 @@ var handleButton = function(key, button) {
 	var buttonOut = [];
 	buttonOut.push("UIButton *" + key + " = [UIButton buttonWithType:UIButtonTypeCustom];\n");
 	if (button.backgroundColor)
-		buttonOut.push(key + ".backgroundColor = [UIColor " + button.backgroundColor + "Color];");
+		buttonOut.push(key + ".backgroundColor = " + iosColors(button.backgroundColor));
 
 	output.setValue(buttonOut.join("\n"));
 }
