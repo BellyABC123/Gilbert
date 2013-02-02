@@ -165,6 +165,7 @@ parseCurrent = function() {
 	$(document).ready(function(){
 		var ios = $("#iosout");
 		var finalString = "";
+		finalOutput = [];
 		viewKeys.forEach(function(v) {
 			var currentView = obj[v];
 			var keys = Object.keys(currentView);
@@ -175,6 +176,7 @@ parseCurrent = function() {
 				finalString += o.join("\n");
 			});
 		});
+		output.setValue(" ");
 		output.setValue(finalString);
 	});
 }

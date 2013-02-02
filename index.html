@@ -97,9 +97,13 @@
 
     $(document).keypress(function(e){
         if (e.which == 13) {
+                output.setValue("");
                 parseCurrent();
             }
         });
+    $(document).ready(function(){
+        parseCurrent();
+    });
 
     $("#get-lines").click(function(){
         console.log(editor.getValue());
