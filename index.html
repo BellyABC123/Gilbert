@@ -1,18 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>Mobile View Code Generator</title>
-<style type="text/css" media="screen">
-    #editor { 
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-</style>
+<title>STEPH LOVES TYLER</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <script>
@@ -25,7 +14,26 @@
     return x;
 }</div>
     
+<div id="canvas">
+    Dis is the canvas.
+</div>
+
+<div id="output">
+    <a href="#" id="toggle-output">Toggle</a>
+
+    Dis is where the output is.
+    <div id="htmlout">
+        HTML output
+    </div>
+
+    <div id="iosout">
+        iOS output
+    </div>
+</div>
+
 <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="js.js"></script>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");

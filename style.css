@@ -1,0 +1,29 @@
+body {
+    background: #333;
+    color: #fff;
+    font: 12px/14px 'Consolas', sans-serif;
+}
+#editor {
+    background: #444;
+    display: block;
+    width: 49%;
+    float: left;
+}
+#canvas {
+    background: #444;
+    width: 48%;
+    float: right;
+    padding: 10px;
+}
+#output {
+    width: 48%;
+    display: block;
+    float: left;
+    padding: 10px;
+}
+#htmlout {
+    display: visible;
+}
+#iosout {
+    display: none;
+}
