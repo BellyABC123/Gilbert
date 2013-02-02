@@ -1,0 +1,12 @@
+body {
+    background: #333;
+}
+#editor, #htmlout {
+    width: 50%;
+    height: 600px;
+    float: left;
+}
+#canvas, #iosout {
+    width: 50%;
+    float: right;
+}
