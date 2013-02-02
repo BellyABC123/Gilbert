@@ -10,6 +10,7 @@
     var editor;
     var output;
     var parseCurrent;
+    var stopDemHaterz;
 </script>
 <div id="editor">{
     "MCNavigationView" : {
@@ -63,8 +64,8 @@
 
 <div id="editor"></div>
     
-<div id="canvas">
-    Dis is the canvas.
+<div id="mobileView">
+    <div id="phoneScreen"></div>
 </div>
 
 <div id="output">
@@ -94,6 +95,7 @@
     output = new ace.edit("output");
     output.setTheme("ace/theme/monokai");
     output.getSession().setMode("ace/mode/objectivec");
+    $(window).resize(stopDemHaterz);
 
     $(document).keypress(function(e){
         if (e.which == 13) {
@@ -102,6 +104,7 @@
             }
         });
     $(document).ready(function(){
+        stopDemHaterz();
         parseCurrent();
     });
 

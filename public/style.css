@@ -9,9 +9,11 @@ body {
     width: 49%;
     float: left;
 }
-#canvas {
+#mobileView {
+    position: relative;
+    margin-top: -405px;
     background: #444;
-    width: 48%;
+    width: 360px;
     float: right;
     padding: 10px;
 }
@@ -21,6 +23,16 @@ body {
     float: left;
     margin-top: 10px;
 }
+
+#phoneScreen {
+    width: 320px;
+    height: 480px;
+    position: absolute;
+    left: 50%;
+    margin:0 0 0 -160px;
+    background-color: white;
+}
+
 #htmlout {
     display: visible;
 }
