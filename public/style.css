@@ -19,6 +19,7 @@ body {
     width: 49%;
     display: block;
     float: left;
+    margin-top: 10px;
 }
 #htmlout {
     display: visible;

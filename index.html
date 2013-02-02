@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <title>STEPH LOVES TYLER</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="public/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <script>
@@ -68,9 +68,9 @@
     </div>
 </div>
 
-<script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="haterz.js"></script>
+<script src="public/haterz.js"></script>
 <script>
     editor = new ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
@@ -78,7 +78,7 @@
 
     output = new ace.edit("output");
     output.setTheme("ace/theme/monokai");
-    output.getSession().setMode("ace/mode/javascript")
+    output.getSession().setMode("ace/mode/objectivec")
 
     $(document).keypress(function(e){
         if (e.which == 13) {
@@ -90,6 +90,6 @@
         console.log(editor.getValue());
         });
 </script>
-<script src="parser.js"> </script>
+<script src="public/parser.js"> </script>
 </body>
 </html>
