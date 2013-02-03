@@ -1,18 +1,23 @@
 {
     "MCNavigationView": {
+        "self": {
+            "backgroundImage": "wood.png"
+        },
         "chefmatesLogo": {
             "class": "label",
             "atomic": "nonatomic",
             "memory": "strong",
             "align": "center",
             "backgroundColor": "clear",
+            "backgroundImage": "wood.png",
             "font": "Lobster 1.4",
             "fontSize": 42,
-            "textColor": "blue",
-            "text": "Chefmates",
+            "textColor": "#32cc88",
+            "text": "Chefmatessrfgdsdfg",
             "shadowColor": "black",
             "shadowOffset": "3,3",
-            "textAlignment": "center"
+            "textAlignment": "center",
+            "relativeTo": "window"
         },
         "pantryButton": {
             "class": "button",
