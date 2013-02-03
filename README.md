@@ -81,6 +81,7 @@ If the self key is set as a "subview" of the view being created, the parser hand
 
 ###HTML / CSS###
 ```
+class (i.e. button, div, label/span, input/textfield, textarea)
 height
 margin (can be universal or specific: topMargin, rightMargin, bottomMargin, leftMargin)
 padding (can be universal or specific: topPadding, rightPadding, bottomPadding, leftPadding)
