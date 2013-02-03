@@ -12,6 +12,7 @@ var classes = {
 	"label" : "UILabel",
 	"button" : "UIButton",
 	"view" : "UIView",
+	"textField" : "UITextField",
 	"scrollView" : "UIScrollView",
 }
 
@@ -100,7 +101,7 @@ function handleProperties(key, props, view) {
 function allocText(key, type, alloc, frame) {
 	if (!key || !type || !alloc || key === "self") return undefined;
 	if (!frame) 
-		return key + " = [" + type + " " + alloc + ";\n";
+		return key + " = [" + type + " " + alloc + "];\n";
 	else if (type === "UIButton")
 		return key + " = [" + type + " " + alloc + "];\n" + key + ".frame = " + frame + ";";
 	return key + " = [[" + type + " " + alloc + frame + "];\n";
@@ -140,7 +141,7 @@ function textAlignmentText(key, align, isButton) {
 function textStringText(key, text, isButton) {
 	if (!key || !text) return undefined;
 	if (isButton)
-		return key + ".titleLabel.text = " + NSStringFromText(text) + ";";
+		return "[" + key + " setTitle:" + NSStringFromText(text) + " forState:UIControlStateNormal];";
 	return key + ".text = " + NSStringFromText(text) + ";";
 }
 
@@ -216,7 +217,7 @@ function filter(arr) {
 function allocTextString(type) {
 	switch(type) {
 		case "button":
-			return "buttonWithType:UIButtonTypeCustom";
+			return "buttonWithType:UIButtonTypeRoundedRect";
 			break;
 		default:
 			return "alloc] initWithFrame:";

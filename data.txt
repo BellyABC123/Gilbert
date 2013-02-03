@@ -1,14 +1,49 @@
 {
-    "LoginView" : {
-        "self" : {
-            "backgroundImage" : "wood.png"
+    "LoginView": {
+        "self": {
+            "backgroundImage": "wood2.png"
         },
-        "usernameField" : {
-            "class" : "UITextField",
-            "relativeTo" : "window",
-            "align" : "center",
-            "properties" : ["placeholder"],
-            "placeholder" : "Username"
+        "usernameField": {
+            "class": "textField",
+            "relativeTo": "window",
+            "align": "center",
+            "properties": [
+                "placeholder"
+            ],
+            "placeholder": "Username",
+            "text": "Username",
+            "backgroundColor": "clear",
+            "borderColor" : "black",
+            "borderWidth" : 2,
+            "font": "Helvetica",
+            "fontSize": 20,
+            "padding": 20
+        },
+        "passwordField": {
+            "class": "textField",
+            "relativeTo": "window",
+            "align": "center",
+            "properties": [
+                "placeholder"
+            ], 
+            "placeholder": "Password",
+            "text": "Password",
+            "backgroundColor": "clear",
+            "borderColor" : "black",
+            "borderWidth" : 2,
+            "font": "Helvetica",
+            "fontSize": 20,
+            "padding": 80
+        },
+        "loginButton": {
+            "class": "button",
+            "text": "Login",
+            "textColor": "#2380cc",
+            "font": "Helvetica",
+            "fontSize": 22,
+            "relativeTo": "window",
+            "align": "center",
+            "padding": 130
         }
-    } 
+    }
 }
