@@ -18,18 +18,30 @@ function setTextAlign(key, align) {
 }
 
 function setColor(key, color) {
-    if (!key || !color) return undefined;
+    if (!key || !color)
+        return undefined;
     return "color: " + color + ";";
 }
 
 function setBackground(key, bg) {
-    if (!key || !bg) return undefined;
+    if (!key || !bg)
+        return undefined;
     switch(bg) {
         case "clear":
             return "background: transparent;";
         default:
             return "background: " + bg + ";";
     }
+}
+
+function setWidth(key, width) {
+    if (!key || !width) return undefined;
+    return "width: " + width + ";";
+}
+
+function setHeight(key, height) {
+    if (!key || !height) return undefined;
+    return "height: " + height + ";";
 }
 
 function alignObj(key, pos) {
@@ -46,20 +58,42 @@ function alignObj(key, pos) {
     }
 }
 
-function setPadding(key, padding) {
-    if (!key || !padding) return undefined;
-    return "padding: " + padding + "px;";
+function setPadding(key, obj) {
+    if (!key || !obj || !obj.padding) return undefined;
+    if (obj.padding) {
+        return "padding: " + obj.padding + ";";
+    }
+    else if (obj.topPadding && obj.rightPadding && obj.bottomPadding && obj.leftPadding) {
+    }
+        return "padding: " + obj.topPadding + " " + obj.rightPadding + " " + obj.bottomPadding + " " + obj.leftPadding + ";";
 }
 
 function setMargin(key, obj) {
-    if (obj.topMargin && obj.rightMargin && obj.bottomMargin && obj.leftMargin) {
-        return "margin: " + obj.topMargin + "px " + obj.rightMargin + "px " + obj.bottomMargin + "px " + obj.leftMargin + "px;";
+    if (!key || !obj || !obj.margin) return undefined;
+    if (obj.margin) {
+        return "margin: " + obj.margin + ";";
     }
+    else if (obj.topMargin && obj.rightMargin && obj.bottomMargin && obj.leftMargin) {
+        return "margin: " + obj.topMargin + " " + obj.rightMargin + " " + obj.bottomMargin + " " + obj.leftMargin + ";";
+    }
+}
+
+function setBoxShadow(key, obj) {
+    if (!key || !obj || !obj.boxShadowColor || !obj.boxShadowOffset) return undefined;
+    var moz = "-moz-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";\n";
+    var webkit = "-webkit-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";\n";
+    var box = "box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";";
+    return moz + webkit + box;
+}
+
+function setTextShadow(key, obj) {
+    if (!key || !obj.textShadowColor || !obj.textShadowOffset) return undefined;
+    return "text-shadow: " + obj.textShadowOffset[0] +  "px " + obj.textShadowOffset[2] + "px " + obj.textShadowColor + ";";
 }
 
 function makeItem(key, obj) {
     if (!key || !obj | !obj.text) return undefined;
-    return "<div class=\"." + key + "\">" + obj.text + "</div>\n";
+    return "<div class=\"" + key + "\">" + obj.text + "</div>\n";
 }
 
 function filterUndefined(arr) {
@@ -74,14 +108,23 @@ function filterUndefined(arr) {
 function pushStyle(key, view) {
     var tuco = [];
     console.log(view);
-    tuco.push("." + key + " {");
+    if (key.indexOf("body") !== -1) {
+        tuco.push(key + " {");
+    }
+    else {
+        tuco.push("." + key + " {");
+    }
     tuco.push(setBackground(key, view.backgroundColor));
+    tuco.push(setWidth(key, view.width));
+    tuco.push(setHeight(key, view.height));
     tuco.push(setFont(key, view));
     tuco.push(setColor(key, view.textColor));
     tuco.push(setTextAlign(key, view.textAlignment));
     tuco.push(alignObj(key, view.position));
-    tuco.push(setPadding(key, view.padding));
+    tuco.push(setPadding(key, view));
     tuco.push(setMargin(key, view));
+    tuco.push(setBoxShadow(key, view));
+    tuco.push(setTextShadow(key, view));
     tuco.push("}\n");
     return filterUndefined(tuco);
 }
@@ -105,9 +148,13 @@ var middle = ["</style>\n</head>\n<body>\n"];
 var endings = ["</body>\n</html>"];
 
 console.log(headings);
-parseCurrent = function() {
+parseHTMLCurrent = function() {
 	var lines = editor.getValue();
-	var obj = getViewObject(lines);
+    try {
+    	var obj = getViewObject(lines);
+    } catch(err) {
+        return;
+    }
 	var viewKeys = Object.keys(obj);
 
     $(document).ready(function() {
@@ -141,7 +188,7 @@ parseCurrent = function() {
         
         finalString += endings;
         
-        output.setValue(" ");
-        output.setValue(finalString);
+        htmlout.setValue("");
+        htmlout.setValue(finalString);
     });
 }

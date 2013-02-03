@@ -3,40 +3,42 @@ body {
     color: #fff;
     font: 12px/14px 'Consolas', monospace;
 }
+#header {
+    font: 24px/24px 'Questrial';
+    text-transform: uppercase;
+    width: 98%;
+    padding: 10px;
+    height: 28px;
+}
+.pink {
+    color: #f92672;
+    font-size: 26px;
+}
+.yellow {
+    color: #e6d157;
+    font-size: 20px;
+    z-index: 42;
+    padding-left: 100px;
+    margin-left: -100px;
+}
 #editor {
     background: #444;
     display: block;
     width: 49%;
     float: left;
 }
-#mobileView {
-    position: absolute;
-    top:10px;
-    right:0px;
-    background: #444;
-    width: 360px;
-    float: right;
-    padding: 10px;
-}
 #output {
     width: 49%;
-    display: block;
+    display: visible;
     float: right;
 }
-
-#phoneScreen {
-    width: 320px;
-    height: 480px;
-    left:30px;
-    position: absolute;
-    background-color: white;
-}
-
 #htmlout {
-    display: visible;
-}
-#iosout {
+    width: 49%;
+    float: right;
     display: none;
+}
+#toggle {
+    float: right;
 }
 a, a:link, a:hover, a:Visited {
     color: #4db0e3;
