@@ -26,7 +26,7 @@ function setColor(key, color) {
 function setBackground(key, obj) {
     if (!key || !obj)
         return undefined;
-    if (obj.backgroundColor.indexOf("clear") !== -1) {
+    if (obj.backgroundColor !== undefined && obj.backgroundColor.indexOf("clear") !== -1) {
         var bgColor = "background: transparent";
     }
     else {
@@ -136,6 +136,7 @@ function filterUndefined(arr) {
 }
 
 function pushStyle(key, view) {
+    if (!key || !view) return undefined;
     var tuco = [];
     console.log(view);
     if (key.indexOf("body") !== -1) {

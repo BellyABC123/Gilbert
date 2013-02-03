@@ -1,54 +1,14 @@
 {
-    "MCNavigationView": {
-        "self": {
-            "backgroundImage": "wood.png"
+    "LoginView" : {
+        "self" : {
+            "backgroundImage" : "wood.png"
         },
-        "chefmatesLogo": {
-            "class": "label",
-            "atomic": "nonatomic",
-            "memory": "strong",
-            "align": "center",
-            "backgroundColor": "clear",
-            "backgroundImage": "wood.png",
-            "font": "Lobster 1.4",
-            "fontSize": 42,
-            "textColor": "#32cc88",
-            "text": "Chefmatessrfgdsdfg",
-            "shadowColor": "black",
-            "shadowOffset": "3,3",
-            "textAlignment": "center",
-            "relativeTo": "window"
-        },
-        "pantryButton": {
-            "class": "button",
-            "atomic": "nonatomic",
-            "memory": "strong",
-            "align": "center",
-            "backgroundColor": "clear",
-            "font": "Lobster 1.4",
-            "fontSize": 24,
-            "textColor": "white",
-            "text": "My Pantry",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "textAlignment": "center",
-            "relativeTo": "window"
-        },
-        "loginTextField": {
-            "class": "UITextField",
-            "properties": [
-                "placeholder",
-                "clearsOnBeginEditing"
-            ],
-            "backgroundColor": "clear",
-            "placeholder": "Placeholder Text",
-            "clearsOnBeginEditing": true,
-            "text": "Placeholder text",
-            "font": "Arial",
-            "fontSize": 20,
-            "relativeTo": "window",
-            "textAlignment": "center",
-            "align": "center"
+        "usernameField" : {
+            "class" : "UITextField",
+            "relativeTo" : "window",
+            "align" : "center",
+            "properties" : ["placeholder"],
+            "placeholder" : "Username"
         }
-    }
+    } 
 }
