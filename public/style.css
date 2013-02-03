@@ -21,8 +21,7 @@ body {
 #output {
     width: 49%;
     display: block;
-    float: left;
-    margin-top: 10px;
+    float: right;
 }
 
 #phoneScreen {
