@@ -23,15 +23,34 @@ function setColor(key, color) {
     return "color: " + color + ";";
 }
 
-function setBackground(key, bg) {
-    if (!key || !bg)
+function setBackground(key, obj) {
+    if (!key || !obj)
         return undefined;
-    switch(bg) {
-        case "clear":
-            return "background: transparent;";
-        default:
-            return "background: " + bg + ";";
+    if (obj.backgroundColor.indexOf("clear") !== -1) {
+        var bgColor = "background: transparent";
     }
+    else {
+        var bgColor = "background: " + obj.backgroundColor;
+    }
+    if (obj.backgroundImage) {
+        var bgUrl = " url('" + obj.backgroundImage + "')";
+        if (obj.backgroundRepeat) {
+            switch(obj.backgroundRepeat.toLowerCase()) {
+                case "x":
+                    return bgColor + bgUrl + " repeat-x;";
+                case "y":
+                    return bgColor + bgUrl + " repeat-y;";
+                case "none":
+                    return bgColor + bgUrl + " no-repeat;";
+                default:
+                    return bgColor + bgUrl + ";";
+            }
+        }
+        else {
+            return bgColor + bgUrl + ";";
+        }
+    }
+    return bgColor + ";";
 }
 
 function setWidth(key, width) {
@@ -64,8 +83,9 @@ function setPadding(key, obj) {
         return "padding: " + obj.padding + ";";
     }
     else if (obj.topPadding && obj.rightPadding && obj.bottomPadding && obj.leftPadding) {
+        return "padding: " + obj.topPadding + " " + obj.rightPadding + " " + 
+                obj.bottomPadding + " " + obj.leftPadding + ";";
     }
-        return "padding: " + obj.topPadding + " " + obj.rightPadding + " " + obj.bottomPadding + " " + obj.leftPadding + ";";
 }
 
 function setMargin(key, obj) {
@@ -74,16 +94,26 @@ function setMargin(key, obj) {
         return "margin: " + obj.margin + ";";
     }
     else if (obj.topMargin && obj.rightMargin && obj.bottomMargin && obj.leftMargin) {
-        return "margin: " + obj.topMargin + " " + obj.rightMargin + " " + obj.bottomMargin + " " + obj.leftMargin + ";";
+        return "margin: " + obj.topMargin + " " + obj.rightMargin + " " + 
+                obj.bottomMargin + " " + obj.leftMargin + ";";
     }
 }
 
+//css requires minimum color and offset
 function setBoxShadow(key, obj) {
     if (!key || !obj || !obj.boxShadowColor || !obj.boxShadowOffset) return undefined;
-    var moz = "-moz-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";\n";
-    var webkit = "-webkit-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";\n";
-    var box = "box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px " + obj.boxShadowColor + ";";
-    return moz + webkit + box;
+    var shadowColor = obj.boxShadowColor + ";\n";
+   
+    var moz = "-moz-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px ";
+    var webkit = "-webkit-box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px ";
+    var box = "box-shadow: " + obj.boxShadowOffset[0] + "px " + obj.boxShadowOffset[2] + "px ";
+    if (obj.boxShadowBlur) {
+        var blur = obj.boxShadowBlur + "px ";
+        return (moz + blur + shadowColor) + (webkit + blur + shadowColor) + (box + blur + shadowColor);
+    }
+    else {
+        return (moz + shadowColor) + (webkit + shadowColor) + (box + shadowColor);
+    }
 }
 
 function setTextShadow(key, obj) {
@@ -114,7 +144,7 @@ function pushStyle(key, view) {
     else {
         tuco.push("." + key + " {");
     }
-    tuco.push(setBackground(key, view.backgroundColor));
+    tuco.push(setBackground(key, view));
     tuco.push(setWidth(key, view.width));
     tuco.push(setHeight(key, view.height));
     tuco.push(setFont(key, view));

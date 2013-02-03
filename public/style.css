@@ -21,6 +21,14 @@ body {
     padding-left: 100px;
     margin-left: -100px;
 }
+.docs {
+    float: right;
+    font-size: 16px;
+    color: #FFF;
+}
+.docs a, .docs a:link, .docs a:hover, .docs A:visited {
+    color: #FFF;
+}
 #editor {
     background: #444;
     display: block;
