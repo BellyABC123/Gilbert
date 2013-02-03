@@ -123,8 +123,34 @@ function setTextShadow(key, obj) {
 }
 
 function makeItem(key, obj) {
-    if (!key || !obj | !obj.text) return undefined;
-    return "<div class=\"" + key + "\">" + obj.text + "</div>\n";
+    if (!key || !obj) return undefined;
+    if (!obj.text || !obj.class) return undefined;
+    switch (obj.class.toLowerCase()) {
+        case "button":
+            return "<button type=\"button\" class=\"" + key + "\">" + obj.text + "</button>\n";
+        case "label":
+            return "<span class=\"" + key + "\">" + obj.text + "</span>\n";
+        case "span": 
+            return "<span class=\"" + key + "\">" + obj.text + "</span>\n";
+        case "textfield":
+            if (obj.placeholder) {
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.text + "\"></input>\n";
+            }
+            else {
+                return obj.text + ": <input class=\"" + key + "\"></input>\n";
+            }
+        case "textarea":
+            return "<textarea class=\"" + key + "\">" + obj.text + "</textarea>\n";
+        case "input":
+            if (obj.placeholder) {
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.text + "\"></input>\n";
+            }
+            else {
+                return obj.text + ": <input class=\"" + key + "\"></input>\n";
+            }
+        default:
+            return "<div class=\"" + key + "\">" + obj.text + "</div>\n";
+    }
 }
 
 function filterUndefined(arr) {
