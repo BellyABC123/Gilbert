@@ -1,0 +1,49 @@
+{
+    "MCNavigationView": {
+        "chefmatesLogo": {
+            "class": "label",
+            "atomic": "nonatomic",
+            "memory": "strong",
+            "align": "center",
+            "backgroundColor": "blue",
+            "font": "Lobster 1.4",
+            "fontSize": 42,
+            "textColor": "green",
+            "text": "Chefmates",
+            "shadowColor": "black",
+            "shadowOffset": "3,3",
+            "textAlignment": "center"
+        },
+        "pantryButton": {
+            "class": "button",
+            "atomic": "nonatomic",
+            "memory": "strong",
+            "align": "center",
+            "backgroundColor": "clear",
+            "font": "Lobster 1.4",
+            "fontSize": 24,
+            "textColor": "white",
+            "text": "My Pantry",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "textAlignment": "center",
+            "relativeTo": "window"
+        },
+        "loginTextField": {
+            "class": "UITextField",
+            "properties": [
+                "placeholder",
+                "clearsOnBeginEditing"
+            ],
+            "backgroundColor": "clear",
+            "placeholder": "Placeholder Text",
+            "clearsOnBeginEditing": true,
+            "text": "Placeholder text",
+            "font": "Arial",
+            "fontSize": 20,
+            "relativeTo": "window",
+            "textAlignment": "center",
+            "align": "center"
+        }
+    }
+}

@@ -11,53 +11,9 @@
     var output;
     var parseCurrent;
     var stopDemHaterz;
+    var saveData;
 </script>
-<div id="editor">{
-    "MCNavigationView" : {
-        "chefmatesLogo" : {
-            "class" : "label",
-            "atomic" : "nonatomic",
-            "memory" : "strong", 
-            "align" : "center",
-            "backgroundColor" : "clear",
-            "font" : "Lobster 1.4",
-            "fontSize" : 42,
-            "textColor" : "white",
-            "text" : "Chefmates",
-            "shadowColor" : "black",
-            "shadowOffset" : "3,3",
-            "textAlignment" : "center",
-            "relativeTo" : "window"
-        },
-        "pantryButton" : {
-            "class" : "button",
-            "atomic" : "nonatomic",
-            "memory" : "strong", 
-            "align" : "center",
-            "backgroundColor" : "clear",
-            "font" : "Lobster 1.4",
-            "fontSize" : 24,
-            "textColor" : "white",
-            "text" : "My Pantry",
-            "borderColor" : "black",
-            "borderWidth" : 1.0,
-            "textAlignment" : "center",
-            "relativeTo" : "chefmatesLogo"
-        },
-        "loginTextField" : {
-            "class" : "UITextField",
-            "properties" : [
-                                "placeholder",
-                                "editing",
-                                "clearsOnBeginEditing"
-                           ],
-            "backgroundColor" : "clear",
-            "placeholder" : "Placeholder Text",
-            "editing" : true,
-            "clerasOnBeginEditing" : true
-        }
-    }
-}
+<div id="editor">
 </div>
 
 <div id="editor"></div>
@@ -80,6 +36,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="haterz.js"></script>
 <script>
+
     editor = new ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/json");
@@ -93,11 +50,34 @@
     output.getSession().setUseSoftTabs(true);
     $(window).resize(stopDemHaterz);
 
+    saveData = function() {
+        var currentcode = editor.getValue();
+        console.log(currentcode);
+        $.ajax({
+            type: "post",
+            data: {code: currentcode},
+            url: "/savedCode",
+            success: true
+        });
+    }
+
+    function getData() {
+        $.ajax({
+            type: "get",
+            url: "/savedCode",
+            success: function(data) {
+                console.log(JSON.stringify(data.code));
+                editor.setValue(JSON.stringify(data.code, undefined, 4));
+            }
+        });
+    }
+
     editor.getSession().on('change', function(e){
         parseCurrent();
     });
 
     $(document).ready(function(){
+        getData();
         stopDemHaterz();
         parseCurrent();
     });

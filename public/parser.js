@@ -79,6 +79,8 @@ function handleProperties(key, props, view) {
 function allocText(key, type, alloc, frame) {
 	if (!frame) 
 		return type + " *" + key + " = [" + type + " " + alloc + ";\n";
+	else if (type === "UIButton")
+		return type + " *" + key + " = [" + type + " " + alloc + "];\n" + key + ".frame = " + frame + ";";
 	return type + " *" + key + " = [[" + type + " " + alloc + frame + "];\n";
 }
 
@@ -87,7 +89,10 @@ function fontText(key, font, size) {
 	return "UIFont *" + key + "Font = [UIFont fontWithName:" + NSStringFromText(font) + " size:" + size + "];";
 }
 
-function textColorText(key, color) {
+function textColorText(key, color, isButton) {
+	if (!color) return undefined;
+	if (isButton) 
+		return key + ".titleLabel.textColor" + " = " + iosColors(color) + ";";
 	return key + ".textColor" + " = " + iosColors(color) + ";";
 }
 
@@ -96,14 +101,25 @@ function backgroundColorText(key, color) {
 	return key + ".backgroundColor = " + iosColors(color) + ";";
 }
 
-function textAlignmentText(key, align) {
+function textAlignmentText(key, align, isButton) {
 	if (!key || !align) return undefined;
+	if (isButton) 
+		return key + ".titleLabel.textAlignment = " + iosTextAlignment(align) + ";";	
 	return key + ".textAlignment = " + iosTextAlignment(align) + ";";
 }
 
-function textStringText(key, text) {
+function textStringText(key, text, isButton) {
 	if (!key || !text) return undefined;
+	if (isButton)
+		return key + ".titleLabel.text = " + NSStringFromText(text) + ";";
 	return key + ".text = " + NSStringFromText(text) + ";";
+}
+
+function setFontText(key, hasFont, isButton) {
+	if (!key || !hasFont) return undefined;
+	if (isButton)
+		return key + ".titleLabel.font = " + key + "Font" + ";";
+	return key + ".font = " + key + "Font" + ";";
 }
 
 function borderColorText(key, color) {
@@ -135,7 +151,7 @@ function getRectForView(key, view) {
 	if (view.relativeTo === "window") {
 		switch(view.align) {
 			case "center":
-				rectString += "screenRect.width / 2 - " + sizeVar + ".width / 2,";
+				rectString += "screenRect.size.width / 2 - " + sizeVar + ".width / 2,";
 				rectString += padding + ","
 				rectString += sizeVar + ".width, " + sizeVar + ".height);";
 				break;
@@ -187,9 +203,10 @@ function addAllTheThings(key, view) {
 	stuff.push(getRectForView(key, view));
 	stuff.push(allocText(key, getClass(view.class), allocTextString(view.class), view.frame));
 	stuff.push(backgroundColorText(key, view.backgroundColor));
-	stuff.push(textColorText(key, view.textColor));
-	stuff.push(textAlignmentText(key, view.textAlignment));
-	stuff.push(textStringText(key, view.text));
+	stuff.push(textColorText(key, view.textColor, view.class === "button"));
+	stuff.push(textAlignmentText(key, view.textAlignment, view.class === "button"));
+	stuff.push(textStringText(key, view.text, view.class === "button"));
+	stuff.push(setFontText(key, (view.font !== undefined && view.fontSize !== undefined), (view.class === "button")));
 	stuff.push(borderColorText(key, view.borderColor));
 	stuff.push(borderWidthText(key, view.borderWidth));
 	stuff.push(handleProperties(key, view.properties, view));
@@ -213,6 +230,7 @@ parseCurrent = function() {
 	} catch(err) {
 		return;
 	}
+	saveData();
 	output.setValue("");
 	var viewKeys = Object.keys(obj);
 	$(document).ready(function(){
