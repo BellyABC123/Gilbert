@@ -5,8 +5,8 @@ var getViewObject = function(json) {
 }
 
 function setFont(key, obj) {
-    if (!key || !obj || !obj.font || !obj.fontSize) 
-        return undefined;
+    if (!key || !obj) return undefined;
+    else if (!obj.fontSize || !obj.font) return undefined;
     var fontFamily = "font: " + obj.fontSize + "px/" +
             obj.fontSize + "px '" + obj.font + "';";
     return fontFamily;
@@ -26,7 +26,8 @@ function setColor(key, color) {
 function setBackground(key, obj) {
     if (!key || !obj)
         return undefined;
-    if (obj.backgroundColor !== undefined && obj.backgroundColor.indexOf("clear") !== -1) {
+    else if (!obj.backgroundColor) return undefined;
+    if (obj.backgroundColor.indexOf("clear") !== -1) {
         var bgColor = "background: transparent";
     }
     else {
@@ -122,8 +123,40 @@ function setTextShadow(key, obj) {
 }
 
 function makeItem(key, obj) {
-    if (!key || !obj | !obj.text) return undefined;
-    return "<div class=\"" + key + "\">" + obj.text + "</div>\n";
+    if (!key || !obj) return undefined;
+    if (!obj.class) return undefined;
+    if (!obj.text) {
+        var itemText = "";
+    }
+    else {
+        var itemText = obj.text;
+    }
+    switch (obj.class.toLowerCase()) {
+        case "button":
+            return "<button type=\"button\" class=\"" + key + "\">" + itemText + "</button>\n";
+        case "label":
+            return "<span class=\"" + key + "\">" + itemText + "</span>\n";
+        case "span": 
+            return "<span class=\"" + key + "\">" + itemText + "</span>\n";
+        case "textfield":
+            if (obj.placeholder) {
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.placeholder + "\"></input>\n";
+            }
+            else {
+                return itemText + ": <input class=\"" + key + "\"></input>\n";
+            }
+        case "textarea":
+            return "<textarea class=\"" + key + "\">" + itemText + "</textarea>\n";
+        case "input":
+            if (obj.placeholder) {
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.placeholder + "\"></input>\n";
+            }
+            else {
+                return itemText + ": <input class=\"" + key + "\"></input>\n";
+            }
+        default:
+            return "<div class=\"" + key + "\">" + itemText + "</div>\n";
+    }
 }
 
 function filterUndefined(arr) {
@@ -139,8 +172,8 @@ function pushStyle(key, view) {
     if (!key || !view) return undefined;
     var tuco = [];
     console.log(view);
-    if (key.indexOf("body") !== -1) {
-        tuco.push(key + " {");
+    if (key.indexOf("body") !== -1 || key.indexOf("self") !== -1) {
+        tuco.push("body {");
     }
     else {
         tuco.push("." + key + " {");
