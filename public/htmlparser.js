@@ -124,32 +124,38 @@ function setTextShadow(key, obj) {
 
 function makeItem(key, obj) {
     if (!key || !obj) return undefined;
-    if (!obj.text || !obj.class) return undefined;
+    if (!obj.class) return undefined;
+    if (!obj.text) {
+        var itemText = "";
+    }
+    else {
+        var itemText = obj.text;
+    }
     switch (obj.class.toLowerCase()) {
         case "button":
-            return "<button type=\"button\" class=\"" + key + "\">" + obj.text + "</button>\n";
+            return "<button type=\"button\" class=\"" + key + "\">" + itemText + "</button>\n";
         case "label":
-            return "<span class=\"" + key + "\">" + obj.text + "</span>\n";
+            return "<span class=\"" + key + "\">" + itemText + "</span>\n";
         case "span": 
-            return "<span class=\"" + key + "\">" + obj.text + "</span>\n";
+            return "<span class=\"" + key + "\">" + itemText + "</span>\n";
         case "textfield":
             if (obj.placeholder) {
-                return "<input class=\"" + key + "\" placeholder=\"" + obj.text + "\"></input>\n";
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.placeholder + "\"></input>\n";
             }
             else {
-                return obj.text + ": <input class=\"" + key + "\"></input>\n";
+                return itemText + ": <input class=\"" + key + "\"></input>\n";
             }
         case "textarea":
-            return "<textarea class=\"" + key + "\">" + obj.text + "</textarea>\n";
+            return "<textarea class=\"" + key + "\">" + itemText + "</textarea>\n";
         case "input":
             if (obj.placeholder) {
-                return "<input class=\"" + key + "\" placeholder=\"" + obj.text + "\"></input>\n";
+                return "<input class=\"" + key + "\" placeholder=\"" + obj.placeholder + "\"></input>\n";
             }
             else {
-                return obj.text + ": <input class=\"" + key + "\"></input>\n";
+                return itemText + ": <input class=\"" + key + "\"></input>\n";
             }
         default:
-            return "<div class=\"" + key + "\">" + obj.text + "</div>\n";
+            return "<div class=\"" + key + "\">" + itemText + "</div>\n";
     }
 }
 
@@ -166,8 +172,8 @@ function pushStyle(key, view) {
     if (!key || !view) return undefined;
     var tuco = [];
     console.log(view);
-    if (key.indexOf("body") !== -1) {
-        tuco.push(key + " {");
+    if (key.indexOf("body") !== -1 || key.indexOf("self") !== -1) {
+        tuco.push("body {");
     }
     else {
         tuco.push("." + key + " {");
