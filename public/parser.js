@@ -30,13 +30,13 @@ var iosColors = function(color) {
 var iosTextAlignment = function(align) {
 	switch(align) {
 		case "center":
-			return "NSTextAlignmentCenter;";
+			return "NSTextAlignmentCenter";
 			break;
 		case "right":
-			return "NSTextAlignmentRight;";
+			return "NSTextAlignmentRight";
 			break;
 		case "justify":
-			return "NSTextAlignmentJustified;";
+			return "NSTextAlignmentJustified";
 			break;
 		default:
 			return "NSTextAlignmentLeft";
@@ -46,7 +46,7 @@ var iosTextAlignment = function(align) {
 
 function NSStringFromText(text) {
 	if (!text) return undefined;
-	return "@\"" + text + "\";";
+	return "@\"" + text + "\"";
 }
 
 function parsePropertyValue(value) {
@@ -54,7 +54,7 @@ function parsePropertyValue(value) {
 		if (value) return "YES;";
 		return "NO;";
 	} else if (typeof(value) === typeof("String")) {
-		return NSStringFromText(value);
+		return NSStringFromText(value) + ";";
 	} else if (typeof(value) === typeof(1)) {
 		return "" + value + ";";
 	}
@@ -79,12 +79,16 @@ function handleProperties(key, props, view) {
 function allocText(key, type, alloc, frame) {
 	if (!frame) 
 		return type + " *" + key + " = [" + type + " " + alloc + ";\n";
-	return type + " *" + key + " = [[" + type + " " + alloc + "] " + "initWithFrame: " + frame + "];\n";
+	return type + " *" + key + " = [[" + type + " " + alloc + frame + "];\n";
 }
 
 function fontText(key, font, size) {
 	if (!key || !font || !size) return undefined;
-	return "UIFont *" + key + "Font = [UIFont fontWithName: " + font + " size: " + size + "];";
+	return "UIFont *" + key + "Font = [UIFont fontWithName:" + NSStringFromText(font) + " size:" + size + "];";
+}
+
+function textColorText(key, color) {
+	return key + ".textColor" + " = " + iosColors(color) + ";";
 }
 
 function backgroundColorText(key, color) {
@@ -99,7 +103,7 @@ function textAlignmentText(key, align) {
 
 function textStringText(key, text) {
 	if (!key || !text) return undefined;
-	return key + ".text = " + NSStringFromText(text);
+	return key + ".text = " + NSStringFromText(text) + ";";
 }
 
 function borderColorText(key, color) {
@@ -115,6 +119,36 @@ function borderWidthText(key, width) {
 function addSubviewText(key) {
 	if (!key) return undefined;
 	return "[self addSubview:" + key + "];";
+}
+
+function getTextSize(key, view) {
+	if (!view.text) return undefined;
+	return "CGSize " + key + "Size = [" + NSStringFromText(view.text) + " sizeWithFont:" + key + "Font];";
+}
+
+function getRectForView(key, view) {
+	if (!view.relativeTo) return undefined;
+	var sizeVar = key + "Size";
+	padding = "0";
+	var rectString = "CGRect " + key + "Rect = CGRectMake("; 
+	if (view.padding) padding = view.padding;
+	if (view.relativeTo === "window") {
+		switch(view.align) {
+			case "center":
+				rectString += "screenRect.width / 2 - " + sizeVar + ".width / 2,";
+				rectString += padding + ","
+				rectString += sizeVar + ".width, " + sizeVar + ".height);";
+				break;
+			case "left":
+				break;
+			case "right":
+				break;
+			default:
+				break;
+		}
+	}
+	view.frame = key + "Rect";
+	return rectString;
 }
 
 function filter(arr) {
@@ -137,12 +171,23 @@ function allocTextString(type) {
 	}
 }
 
+function setViewAlignment(view) {
+	if (!view.align)
+		view.align = "left";
+}
+
 function addAllTheThings(key, view) {
 	var stuff = [];
 	console.log(view);
+
+	setViewAlignment(view);
+
+	stuff.push(getTextSize(key, view));
+	stuff.push(getRectForView(key, view));
 	stuff.push(allocText(key, getClass(view.class), allocTextString(view.class), view.frame));
 	stuff.push(fontText(key, view.font, view.fontSize));
 	stuff.push(backgroundColorText(key, view.backgroundColor));
+	stuff.push(textColorText(key, view.textColor));
 	stuff.push(textAlignmentText(key, view.textAlignment));
 	stuff.push(textStringText(key, view.text));
 	stuff.push(borderColorText(key, view.borderColor));
@@ -153,6 +198,9 @@ function addAllTheThings(key, view) {
 	return filter(stuff);
 }
 
+function setupDocument(doc) {
+	doc.push(["CGRect screenRect = [[UIScreen mainScreen] bounds];\n"]);
+}
 
 var handleSubview = function(key, subview) {
 	finalOutput.push(addAllTheThings(key, subview));
@@ -160,12 +208,18 @@ var handleSubview = function(key, subview) {
 
 parseCurrent = function() {
 	var lines = editor.getValue();
-	var obj = getViewObject(lines);
+	try {
+		var obj = getViewObject(lines);
+	} catch(err) {
+		return;
+	}
+	output.setValue("");
 	var viewKeys = Object.keys(obj);
 	$(document).ready(function(){
 		var ios = $("#iosout");
 		var finalString = "";
 		finalOutput = [];
+		setupDocument(finalOutput);
 		viewKeys.forEach(function(v) {
 			var currentView = obj[v];
 			var keys = Object.keys(currentView);

@@ -18,9 +18,7 @@
             "class" : "label",
             "atomic" : "nonatomic",
             "memory" : "strong", 
-            "position" : "center",
-            "top" : 15,
-            "bottom" : 15,
+            "align" : "center",
             "backgroundColor" : "clear",
             "font" : "Lobster 1.4",
             "fontSize" : 42,
@@ -28,15 +26,14 @@
             "text" : "Chefmates",
             "shadowColor" : "black",
             "shadowOffset" : "3,3",
-            "textAlignment" : "center"
+            "textAlignment" : "center",
+            "relativeTo" : "window"
         },
         "pantryButton" : {
             "class" : "button",
             "atomic" : "nonatomic",
             "memory" : "strong", 
-            "position" : "center",
-            "top" : 15,
-            "bottom" : 15,
+            "align" : "center",
             "backgroundColor" : "clear",
             "font" : "Lobster 1.4",
             "fontSize" : 24,
@@ -44,7 +41,8 @@
             "text" : "My Pantry",
             "borderColor" : "black",
             "borderWidth" : 1.0,
-            "textAlignment" : "center"
+            "textAlignment" : "center",
+            "relativeTo" : "chefmatesLogo"
         },
         "loginTextField" : {
             "class" : "UITextField",
@@ -91,18 +89,20 @@
     editor = new ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/json");
+    editor.setShowPrintMargin(false);
+    editor.getSession().setUseSoftTabs(true);
 
     output = new ace.edit("output");
     output.setTheme("ace/theme/monokai");
     output.getSession().setMode("ace/mode/objectivec");
+    output.setShowPrintMargin(false);
+    output.getSession().setUseSoftTabs(true);
     $(window).resize(stopDemHaterz);
 
-    $(document).keypress(function(e){
-        if (e.which == 13) {
-                output.setValue("");
-                parseCurrent();
-            }
-        });
+    editor.getSession().on('change', function(e){
+        parseCurrent();
+    });
+
     $(document).ready(function(){
         stopDemHaterz();
         parseCurrent();
@@ -118,6 +118,5 @@
         }
     }, false);
 </script>
-<script src="parser.js"> </script>
 </body>
 </html>

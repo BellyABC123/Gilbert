@@ -10,8 +10,9 @@ body {
     float: left;
 }
 #mobileView {
-    position: relative;
-    margin-top: -405px;
+    position: absolute;
+    top:10px;
+    right:0px;
     background: #444;
     width: 360px;
     float: right;
@@ -27,9 +28,8 @@ body {
 #phoneScreen {
     width: 320px;
     height: 480px;
+    left:30px;
     position: absolute;
-    left: 50%;
-    margin:0 0 0 -160px;
     background-color: white;
 }
 
