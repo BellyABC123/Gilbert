@@ -182,10 +182,10 @@ function addAllTheThings(key, view) {
 
 	setViewAlignment(view);
 
+	stuff.push(fontText(key, view.font, view.fontSize));
 	stuff.push(getTextSize(key, view));
 	stuff.push(getRectForView(key, view));
 	stuff.push(allocText(key, getClass(view.class), allocTextString(view.class), view.frame));
-	stuff.push(fontText(key, view.font, view.fontSize));
 	stuff.push(backgroundColorText(key, view.backgroundColor));
 	stuff.push(textColorText(key, view.textColor));
 	stuff.push(textAlignmentText(key, view.textAlignment));
