@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>STEPH LOVES TYLER</title>
+<title>Gilbert App</title>
+<link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
 <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -13,24 +14,15 @@
     var stopDemHaterz;
     var saveData;
 </script>
-<div id="editor">
+<div id="header">
+    Gilbert 
+    <span class="pink">&nbsp; | &nbsp;</span>
+    <a href="#" id="toggle-output">Show &nbsp;<span onclick="this.firstChild.data = this.firstChild.data == 'Objective-C' ? 'HTML/CSS' : 'Objective-C'" class="yellow">HTML/CSS</span></a>
 </div>
-
 <div id="editor"></div>
     
-<div id="output">
-    <a href="#" id="toggle-output">Toggle</a>
-
-    Dis is where the output is.
-    <div id="htmlout">
-        <a href="#" id="get-lines">Get</a>
-        HTML output
-    </div>
-
-    <div id="iosout">
-        iOS output
-    </div>
-</div>
+<div id="output"></div>
+<div id="htmlout"></div>
 
 <script src="ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -48,7 +40,12 @@
     output.getSession().setMode("ace/mode/objectivec");
     output.setShowPrintMargin(false);
     output.getSession().setUseSoftTabs(true);
-    $(window).resize(stopDemHaterz);
+
+    htmlout = new ace.edit("htmlout");
+    htmlout.setTheme("ace/theme/monokai");
+    htmlout.getSession().setMode("ace/mode/html");
+    htmlout.setShowPrintMargin(false);
+    htmlout.getSession().setUseSoftTabs(true);
 
     saveData = function() {
         var currentcode = editor.getValue();
@@ -74,25 +71,26 @@
 
     editor.getSession().on('change', function(e){
         parseCurrent();
+        parseHTMLCurrent();
     });
 
     $(document).ready(function(){
         getData();
         stopDemHaterz();
         parseCurrent();
+        parseHTMLCurrent();
     });
 
-    $("#get-lines").click(function(){
-        console.log(editor.getValue());
-        });
+    $(window).resize(stopDemHaterz);
 
     editor.addEventListener('keydown', function(e) {
         if (e.keyCode === 13) {
             parseCurrent();
+            parseHTMLCurrent();
         }
     }, false);
 </script>
+<script src="htmlparser.js"></script>
 <script src="parser.js"></script>
-<!-- <script src="htmlparser.js"></script> -->
 </body>
 </html>
