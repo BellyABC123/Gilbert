@@ -5,8 +5,8 @@ var getViewObject = function(json) {
 }
 
 function setFont(key, obj) {
-    if (!key || !obj || !obj.font || !obj.fontSize) 
-        return undefined;
+    if (!key || !obj) return undefined;
+    else if (!obj.fontSize || !obj.font) return undefined;
     var fontFamily = "font: " + obj.fontSize + "px/" +
             obj.fontSize + "px '" + obj.font + "';";
     return fontFamily;
@@ -26,7 +26,8 @@ function setColor(key, color) {
 function setBackground(key, obj) {
     if (!key || !obj)
         return undefined;
-    if (obj.backgroundColor !== undefined && obj.backgroundColor.indexOf("clear") !== -1) {
+    else if (!obj.backgroundColor) return undefined;
+    if (obj.backgroundColor.indexOf("clear") !== -1) {
         var bgColor = "background: transparent";
     }
     else {
