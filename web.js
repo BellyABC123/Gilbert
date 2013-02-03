@@ -42,6 +42,7 @@ app.get("/savedCode", function(request, response) {
 app.post("/savedCode", function(request, response) {
 	console.log("Trying to save code:", request.body.code);
 	writeFile("data.txt", request.body.code);
+	code = JSON.parse(request.body.code);
 	response.send({
 		code: code,
 		success:true

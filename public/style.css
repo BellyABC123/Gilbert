@@ -24,16 +24,16 @@ body {
 #editor {
     background: #444;
     display: block;
-    width: 49%;
+    width: 50%;
     float: left;
 }
 #output {
-    width: 49%;
+    width: 50%;
     display: visible;
     float: right;
 }
 #htmlout {
-    width: 49%;
+    width: 50%;
     float: right;
     display: none;
 }
