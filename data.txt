@@ -13,11 +13,11 @@
             "placeholder": "Username",
             "text": "Username",
             "backgroundColor": "clear",
-            "borderColor" : "black",
-            "borderWidth" : 2,
+            "borderColor": "black",
+            "borderWidth": 2,
             "font": "Helvetica",
             "fontSize": 20,
-            "padding": 20
+            "top": 20
         },
         "passwordField": {
             "class": "textField",
@@ -25,15 +25,15 @@
             "align": "center",
             "properties": [
                 "placeholder"
-            ], 
+            ],
             "placeholder": "Password",
             "text": "Password",
             "backgroundColor": "clear",
-            "borderColor" : "black",
-            "borderWidth" : 2,
+            "borderColor": "black",
+            "borderWidth": 2,
             "font": "Helvetica",
             "fontSize": 20,
-            "padding": 80
+            "top": 80
         },
         "loginButton": {
             "class": "button",
@@ -43,7 +43,7 @@
             "fontSize": 22,
             "relativeTo": "window",
             "align": "center",
-            "padding": 130
+            "top": 130
         }
     }
 }

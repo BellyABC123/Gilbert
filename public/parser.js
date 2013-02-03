@@ -185,7 +185,7 @@ function getRectForView(key, view) {
 	var sizeVar = key + "Size";
 	padding = "0";
 	var rectString = "CGRect " + key + "Rect = CGRectMake("; 
-	if (view.padding) padding = view.padding;
+	if (view.top) padding = view.top;
 	if (view.relativeTo === "window") {
 		switch(view.align) {
 			case "center":
