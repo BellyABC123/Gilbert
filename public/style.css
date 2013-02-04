@@ -32,16 +32,16 @@ body {
 #editor {
     background: #444;
     display: block;
-    width: 50%;
+    width: 49%;
     float: left;
 }
 #output {
-    width: 50%;
+    width: 49%;
     display: visible;
     float: right;
 }
 #htmlout {
-    width: 50%;
+    width: 49%;
     float: right;
     display: none;
 }
