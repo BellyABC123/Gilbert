@@ -12,6 +12,7 @@ var classes = {
 	"label" : "UILabel",
 	"button" : "UIButton",
 	"view" : "UIView",
+	"textField" : "UITextField",
 	"scrollView" : "UIScrollView",
 }
 
@@ -25,6 +26,27 @@ var iosColors = function(color) {
 	if (validiOSColors.indexOf(color) >= 0) {
 		return "[UIColor " + color + "Color]";
 	}
+}
+
+function hexToRgb(hex) {
+	console.log(typeof(hex));
+	console.log(hex);
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function rgbText(hexVal) {
+	return "[UIColor colorWithRed:" + hexVal.r + " green:" + hexVal.g + " blue:" + hexVal.b + " alpha:1.0]";
 }
 
 var iosTextAlignment = function(align) {
@@ -77,11 +99,12 @@ function handleProperties(key, props, view) {
 }
 
 function allocText(key, type, alloc, frame) {
+	if (!key || !type || !alloc || key === "self") return undefined;
 	if (!frame) 
-		return type + " *" + key + " = [" + type + " " + alloc + ";\n";
+		return key + " = [" + type + " " + alloc + "];\n";
 	else if (type === "UIButton")
-		return type + " *" + key + " = [" + type + " " + alloc + "];\n" + key + ".frame = " + frame + ";";
-	return type + " *" + key + " = [[" + type + " " + alloc + frame + "];\n";
+		return key + " = [" + type + " " + alloc + "];\n" + key + ".frame = " + frame + ";";
+	return key + " = [[" + type + " " + alloc + frame + "];\n";
 }
 
 function fontText(key, font, size) {
@@ -91,13 +114,20 @@ function fontText(key, font, size) {
 
 function textColorText(key, color, isButton) {
 	if (!color) return undefined;
+	var colorText = iosColors(color);
+	var hexVal = hexToRgb(color);
+	if (hexVal)
+		colorText = rgbText(hexVal);
 	if (isButton) 
-		return key + ".titleLabel.textColor" + " = " + iosColors(color) + ";";
-	return key + ".textColor" + " = " + iosColors(color) + ";";
+		return key + ".titleLabel.textColor" + " = " + colorText + ";";
+	return key + ".textColor" + " = " + colorText + ";";
 }
 
 function backgroundColorText(key, color) {
 	if (!key || !color) return undefined;
+	var hexVal = hexToRgb(color);
+	if (hexVal)
+		return key + ".backgroundColor = " + rgbText(hexVal) + ";";
 	return key + ".backgroundColor = " + iosColors(color) + ";";
 }
 
@@ -111,7 +141,7 @@ function textAlignmentText(key, align, isButton) {
 function textStringText(key, text, isButton) {
 	if (!key || !text) return undefined;
 	if (isButton)
-		return key + ".titleLabel.text = " + NSStringFromText(text) + ";";
+		return "[" + key + " setTitle:" + NSStringFromText(text) + " forState:UIControlStateNormal];";
 	return key + ".text = " + NSStringFromText(text) + ";";
 }
 
@@ -124,7 +154,15 @@ function setFontText(key, hasFont, isButton) {
 
 function borderColorText(key, color) {
 	if (!key || !color) return undefined;
+	var hexVal = hexToRgb(color);
+	if (hexVal)
+		return key + ".layer.borderColor = " + rgbText(hexVal) + ";";
 	return key + ".layer.borderColor = " + "[" + iosColors(color) + " CGColor];";
+}
+
+function backgroundImageText(key, image) {
+	if (!key || !image) return undefined;
+	return key + ".backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:" + NSStringFromText(image) + "]];";
 }
 
 function borderWidthText(key, width) {
@@ -133,7 +171,7 @@ function borderWidthText(key, width) {
 }
 
 function addSubviewText(key) {
-	if (!key) return undefined;
+	if (!key || key === "self") return undefined;
 	return "[self addSubview:" + key + "];";
 }
 
@@ -179,7 +217,7 @@ function filter(arr) {
 function allocTextString(type) {
 	switch(type) {
 		case "button":
-			return "buttonWithType:UIButtonTypeCustom";
+			return "buttonWithType:UIButtonTypeRoundedRect";
 			break;
 		default:
 			return "alloc] initWithFrame:";
@@ -192,6 +230,7 @@ function setViewAlignment(view) {
 		view.align = "left";
 }
 
+
 function addAllTheThings(key, view) {
 	var stuff = [];
 	console.log(view);
@@ -203,6 +242,7 @@ function addAllTheThings(key, view) {
 	stuff.push(getRectForView(key, view));
 	stuff.push(allocText(key, getClass(view.class), allocTextString(view.class), view.frame));
 	stuff.push(backgroundColorText(key, view.backgroundColor));
+	stuff.push(backgroundImageText(key, view.backgroundImage));
 	stuff.push(textColorText(key, view.textColor, view.class === "button"));
 	stuff.push(textAlignmentText(key, view.textAlignment, view.class === "button"));
 	stuff.push(textStringText(key, view.text, view.class === "button"));
@@ -215,8 +255,24 @@ function addAllTheThings(key, view) {
 	return filter(stuff);
 }
 
-function setupDocument(doc) {
-	doc.push(["CGRect screenRect = [[UIScreen mainScreen] bounds];\n"]);
+function setupView(viewName, view, output) {
+	var setup = [];
+	setup.push("@interface " + viewName + " : " + "UIView" + "\n");
+	var subviews = Object.keys(view);
+	subviews.forEach(function(s){
+		if (s !== "name" && s !== "self") {
+			var sv = view[s];
+			if (!sv.atomic)
+				sv.atomic = "nonatomic";
+			if (!sv.memory)
+				sv.memory = "strong";
+			setup.push("@property (" + sv.atomic + ", " + sv.memory + ") " + getClass(sv.class) + " *" + s + ";");
+		}
+	});
+	setup.push("\n@end\n\n@implementation " + viewName + "\n");
+	setup.push("CGRect screenRect = [[UIScreen mainScreen] bounds];\n");
+	console.log(setup);
+	output.push(setup);
 }
 
 var handleSubview = function(key, subview) {
@@ -237,9 +293,9 @@ parseCurrent = function() {
 		var ios = $("#iosout");
 		var finalString = "";
 		finalOutput = [];
-		setupDocument(finalOutput);
 		viewKeys.forEach(function(v) {
 			var currentView = obj[v];
+			setupView(v, currentView, finalOutput);
 			var keys = Object.keys(currentView);
 			keys.forEach(function(k) {
 				handleSubview(k, currentView[k]);
@@ -247,6 +303,7 @@ parseCurrent = function() {
 			finalOutput.forEach(function(o){
 				finalString += o.join("\n");
 			});
+			finalString += "@end";
 		});
 		output.setValue(" ");
 		output.setValue(finalString);

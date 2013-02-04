@@ -1,49 +1,49 @@
 {
-    "MCNavigationView": {
-        "chefmatesLogo": {
-            "class": "label",
-            "atomic": "nonatomic",
-            "memory": "strong",
-            "align": "center",
-            "backgroundColor": "clear",
-            "font": "Lobster 1.4",
-            "fontSize": 42,
-            "textColor": "blue",
-            "text": "Chefmates",
-            "shadowColor": "black",
-            "shadowOffset": "3,3",
-            "textAlignment": "center"
+    "LoginView": {
+        "self": {
+            "backgroundImage": "wood2.png"
         },
-        "pantryButton": {
-            "class": "button",
-            "atomic": "nonatomic",
-            "memory": "strong",
-            "align": "center",
-            "backgroundColor": "clear",
-            "font": "Lobster 1.4",
-            "fontSize": 24,
-            "textColor": "white",
-            "text": "My Pantry",
-            "borderColor": "black",
-            "borderWidth": 1,
-            "textAlignment": "center",
-            "relativeTo": "window"
-        },
-        "loginTextField": {
-            "class": "UITextField",
-            "properties": [
-                "placeholder",
-                "clearsOnBeginEditing"
-            ],
-            "backgroundColor": "clear",
-            "placeholder": "Placeholder Text",
-            "clearsOnBeginEditing": true,
-            "text": "Placeholder text",
-            "font": "Arial",
-            "fontSize": 20,
+        "usernameField": {
+            "class": "textField",
             "relativeTo": "window",
-            "textAlignment": "center",
-            "align": "center"
+            "align": "center",
+            "properties": [
+                "placeholder"
+            ],
+            "placeholder": "Username",
+            "text": "Username",
+            "backgroundColor": "clear",
+            "borderColor" : "black",
+            "borderWidth" : 2,
+            "font": "Helvetica",
+            "fontSize": 20,
+            "padding": 20
+        },
+        "passwordField": {
+            "class": "textField",
+            "relativeTo": "window",
+            "align": "center",
+            "properties": [
+                "placeholder"
+            ], 
+            "placeholder": "Password",
+            "text": "Password",
+            "backgroundColor": "clear",
+            "borderColor" : "black",
+            "borderWidth" : 2,
+            "font": "Helvetica",
+            "fontSize": 20,
+            "padding": 80
+        },
+        "loginButton": {
+            "class": "button",
+            "text": "Login",
+            "textColor": "#2380cc",
+            "font": "Helvetica",
+            "fontSize": 22,
+            "relativeTo": "window",
+            "align": "center",
+            "padding": 130
         }
     }
 }
